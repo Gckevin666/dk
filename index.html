@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D.K AI - AI Agent智能体</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <style>
+        .radiant-text {
+            background: linear-gradient(to right, var(--accent), #ffffff, var(--accent));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            perspective: 1000px;
+        }
+
+        .hero-card {
+            background: rgba(30, 30, 30, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            transform: translateZ(0);
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        .hero-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ai-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--primary-bg);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0 0.3rem;
+        }
+
+        .highlight-text {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .typewriter h2 {
+            overflow: hidden;
+            border-right: 0.15em solid var(--accent);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent) }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>D.K AI</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#definition">定义</a></li>
+                    <li><a href="#abilities">能力</a></li>
+                    <li><a href="#development">发展</a></li>
+                    <li><a href="#tools">工具</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <i class="ri-menu-line"></i>
+            </div>
+        </header>
+
+        <main>
+            <section id="home" class="hero">
+                <div class="particle-container" id="particles-bg"></div>
+                <div class="hero-content">
+                    <div class="title-container">
+                        <h2 class="radiant-text">AI Agent（智能体）</h2>
+                    </div>
+                    <p>AI Agent，字面意思是<span class="highlight-text">AI代理</span>，就是代表人类去完成具体的任务的AI</p>
+                    
+                    <div class="view-more">
+                        <a href="#abilities" class="view-more-btn">
+                            <span>查看更多</span>
+                            <i class="ri-arrow-down-line"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="definition" class="reveal">
+                <div class="section-container">
+                    <h2 class="section-title">经典定义</h2>
+                    <div class="cards-container">
+                        <div class="card reveal">
+                            <p class="quote">"Agent是由大模型驱动的自主代理，具备三大核心能力——规划、行动和记忆。"</p>
+                            <p class="quote-author">—— Lilian Weng</p>
+                        </div>
+                        <div class="card reveal">
+                            <p class="quote">"Agent是由一种通过传感器感知环境，并通过执行器用于环境的自主实体。"</p>
+                            <p class="quote-author">—— 《人工智能：一种现代方法》</p>
+                        </div>
+                        <div class="card reveal">
+                            <p class="quote">"Agent是一种能够自主地在环境中行动，以实现目标的计算系统。"</p>
+                            <p class="quote-author">—— 《智能体导论》</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-container reveal">
+                        <p>结合定义，AI Agent就是：能够感知环境的、能独立做出决策的、并能主动执行行动的人工智能系统。它可以是软件程序（如聊天机器人、搜索引擎爬虫等）、机器人硬件（如自动驾驶汽车、家用机器人），或是两者的结合。</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="abilities" class="reveal">
+                <div class="section-container">
+                    <h2 class="section-title">AI Agent的能力</h2>
+                    
+                    <div class="abilities-tabs">
+                        <div class="tabs-nav">
+                            <button class="tab-btn active" data-tab="perception">感知能力</button>
+                            <button class="tab-btn" data-tab="planning">规划能力</button>
+                            <button class="tab-btn" data-tab="action">行动能力</button>
+                            <button class="tab-btn" data-tab="memory">记忆能力</button>
+                        </div>
+                        
+                        <div class="tab-content active" id="perception">
+                            <div class="ability-container reveal">
+                                <h3 class="section-subtitle">1. 感知能力</h3>
+                                <div class="ability-flow">
+                                    <div class="flow-step">
+                                        <div class="flow-number">1</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">文本感知能力</h4>
+                                            <p class="flow-desc">单纯的大语言模型：是靠海量的文本数据训练出来的，基础的感知方式就是接受用户输入的文本。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">2</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">间接多模态感知</h4>
+                                            <p class="flow-desc">利用OCR等中间工具，把图片/PDF等转为文本输入给大模型。但只提取文字会丢失图片布局、声音语气等信息。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">3</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">视觉感知能力</h4>
+                                            <p class="flow-desc">2023年OpenAI GPT有了Vision版本，开启了多模态初阶，能直接理解图片上的所有信息，大模型有了视觉感知能力。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">4</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">端到端视觉感知</h4>
+                                            <p class="flow-desc">GPT-4o直接将多模态数据端到端训练，能理解声音语气和图片细节，甚至识别视频时序信息，大模型拥有了耳朵眼睛嘴巴。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="planning">
+                            <div class="ability-container reveal">
+                                <h3 class="section-subtitle">2. 规划能力</h3>
+                                <div class="ability-flow">
+                                    <div class="flow-step">
+                                        <div class="flow-number">1</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">初步规划能力的萌芽</h4>
+                                            <p class="flow-desc">Chain of Thought (CoT)与Tree of Thought (ToT)思维链和思维树技术让大模型具备了基础推理能力。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">2</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">多工作流和智能体架构</h4>
+                                            <p class="flow-desc">Multi Agent框架出现，类似扣子和Dify平台，让多个智能体协作完成复杂任务。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">3</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">专门推理模型</h4>
+                                            <p class="flow-desc">OpenAI的O1和R1让大模型内化自主推理过程，在回答问题前有了思考的能力。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">4</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">端到端训练的"模型即Agent"</h4>
+                                            <p class="flow-desc">Deep Research背后的o3模型自主决定何时搜索信息、整理信息和深度分析，实现了端到端的Agent能力。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="action">
+                            <div class="ability-container reveal">
+                                <h3 class="section-subtitle">3. 行动能力</h3>
+                                <div class="ability-flow">
+                                    <div class="flow-step">
+                                        <div class="flow-number">1</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">基础调用方式</h4>
+                                            <p class="flow-desc">Function Calling大模型函数调用，例如现在扣子平台上的API工具调用，实现了基础的行动能力。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">2</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">更复杂的行动</h4>
+                                            <p class="flow-desc">Anthropic的computer use训练大模型从视觉上看懂电脑屏幕，实现点击和操作电脑的功能。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">3</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">开源Browser Use</h4>
+                                            <p class="flow-desc">通过网页自动化工具让模型操作浏览器，包括Manus操作网页的技术以及OpenAI的Operator。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">4</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">模型上下文协议</h4>
+                                            <p class="flow-desc">Anthropic的MCP（模型上下文协议）统一了工具调用接口，就像多孔Type-C转接头，让工具接入更标准化。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="ability-note">
+                                    <h4>小彩蛋:</h4>
+                                    <p>包括OpenAI发布的Agent SDK和新的response API，并内置了自家工具，从行业标准和基建上让模型更好地使用工具完成复杂任务。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="tab-content" id="memory">
+                            <div class="ability-container reveal">
+                                <h3 class="section-subtitle">4. 记忆能力</h3>
+                                <div class="ability-flow memory-flow">
+                                    <div class="flow-step">
+                                        <div class="flow-number">1</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">短期记忆</h4>
+                                            <p class="flow-desc">通过增加上下文长度来提升模型的短期记忆能力，让模型能记住更长的对话历史。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">2</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">外部知识库检索</h4>
+                                            <p class="flow-desc">RAG(检索增强生成)将知识存储在外部数据库，需要时再去查找相关内容，像给大模型增加外挂，避免幻觉问题。</p>
+                                        </div>
+                                    </div>
+                                    <div class="flow-arrow"><i class="ri-arrow-right-line"></i></div>
+                                    <div class="flow-step">
+                                        <div class="flow-number">3</div>
+                                        <div class="flow-content">
+                                            <h4 class="flow-title">先进记忆机制</h4>
+                                            <p class="flow-desc">新的注意力机制研究，如Deepseek的NSA（洗漱注意力机制），专门解决模型的长期记忆问题。</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="development" class="reveal">
+                <div class="section-container">
+                    <h2 class="section-title">AI Agent发展现状</h2>
+                    
+                    <div class="timeline-container">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2023年初</div>
+                                <h3 class="timeline-title">早期探索阶段</h3>
+                                <p class="timeline-desc">GPT3.5发布后，研究人员开始对agent进行探索和实验，诞生了多个具有里程碑意义的实验项目。</p>
+                                <div class="timeline-projects">
+                                    <span class="timeline-badge">AutoGPT</span>
+                                    <span class="timeline-badge">BabyAGI</span>
+                                    <span class="timeline-badge">斯坦福小镇</span>
+                                </div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2023年下半年至今</div>
+                                <h3 class="timeline-title">优秀项目涌现</h3>
+                                <p class="timeline-desc">随着技术的成熟，出现了一批优秀的AI Agent产品，特别是在编程、调研等领域取得了显著成果。</p>
+                                <div class="timeline-projects">
+                                    <span class="timeline-badge">Cursor</span>
+                                    <span class="timeline-badge">v0.dev</span>
+                                    <span class="timeline-badge">Bolt AI</span>
+                                    <span class="timeline-badge">Manus AI</span>
+                                    <span class="timeline-badge">Deep research Agent</span>
+                                    <span class="timeline-badge">AutoGLM</span>
+                                </div>
+                            </div>
+                            <div class="timeline-dot"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="tools" class="reveal">
+                <div class="section-container">
+                    <h2 class="section-title">AI Agent工具</h2>
+                    
+                    <div class="tools-category reveal">
+                        <h3 class="section-subtitle">基础大模型工具</h3>
+                        <p class="category-desc">不直接属于 AI Agent，但可以作为构建 AI Agent 的基础或组成部分的工具：</p>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <img src="images/chatgpt.jpg" alt="ChatGPT" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">ChatGPT</h4>
+                                    <p class="tool-description">这是一个由OpenAI开发的大型语言模型，擅长自然语言理解和生成。它可以作为AI Agent的"大脑"，提供对话、文本生成、逻辑推理等能力，但本身通常不被视为一个完全自主的Agent，而是需要与其他组件结合才能实现Agent的功能。</p>
+                                    <a href="https://chat.openai.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/gemini.jpg" alt="Gemini" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Gemini</h4>
+                                    <p class="tool-description">类似于 ChatGPT，Gemini 是 Google 开发的多模态大型语言模型，具备强大的文本、图像、音频等理解和生成能力，可以作为构建更复杂 AI Agent 的基础。</p>
+                                    <a href="https://gemini.google.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/grok.jpg" alt="Grok" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Grok</h4>
+                                    <p class="tool-description">这是一款由 xAI 开发的大型语言模型，以其幽默感和对实时信息的访问而闻名。它可以作为构建各种 AI Agent 的核心对话和推理能力的基础。</p>
+                                    <a href="https://grok.x.ai/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/deepseek.jpg" alt="Deepseek" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Deepseek</h4>
+                                    <p class="tool-description">DeepSeek公司开发的一系列语言模型，例如DeepSeek LLM。它们可以作为AI Agent的语言理解和生成引擎。</p>
+                                    <a href="https://www.deepseek.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/qwen.jpg" alt="Qwen" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Qwen (阿里云)</h4>
+                                    <p class="tool-description">Qwen 是阿里云推出的大规模语言模型系列，具备优秀的中文理解和生成能力。可以用于构建中文场景下的各种 AI Agent。</p>
+                                    <a href="https://qianwen.aliyun.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/claude.jpg" alt="Claude 3.7" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Claude 3.7</h4>
+                                    <p class="tool-description">Claude 是 Anthropic 开发的先进语言模型，以其强大的推理能力、长文本处理能力和安全性著称。它可以作为构建需要复杂逻辑和安全保障的 AI Agent 的基础。</p>
+                                    <a href="https://www.anthropic.com/claude" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/openai-agent.png" alt="OpenAI Agent" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">OpenAI Agent</h4>
+                                    <p class="tool-description">OpenAI的agent平台，提供构建和部署agent的工具和接口。</p>
+                                    <a href="https://www.openai.fm/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="tools-category reveal">
+                        <h3 class="section-subtitle">AI Agent平台工具</h3>
+                        <p class="category-desc">AI Agent 或支持构建AI Agent的平台：</p>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <img src="images/manas.jpg" alt="Manas AI" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Manas AI</h4>
+                                    <p class="tool-description">这是一个提供对话式 AI 解决方案的公司，他们的技术可以用于构建各种 AI Agent，特别是聊天机器人和虚拟助手，为企业提供客户服务、销售支持等功能。</p>
+                                    <a href="https://manus.im/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/flowith.jpg" alt="Flowith" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Flowith</h4>
+                                    <p class="tool-description">类似于 Dify 和 Coze，Flowise 也是一个开源的低代码平台，用于构建自定义的 AI 工作流和 Agent。它通过节点连接的方式，让用户能够灵活地组合不同的 AI 模型和服务，创建复杂的智能应用。</p>
+                                    <a href="https://flowiseai.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/metagpt.jpg" alt="MetaGPT" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">MetaGPT</h4>
+                                    <p class="tool-description">MetaGPT 是一个 多智能体框架，旨在通过模拟软件公司的协作过程来生成软件。MGX 很可能是基于 MetaGPT 框架开发出的具体模型或 Agent，专注于自动化软件开发流程中的某些环节，例如需求分析、代码编写等。</p>
+                                    <a href="https://mgx.dev/?utm_source=ai-bot.cn" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/tars.jpg" alt="字节 TARS" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">字节 TARS (字节跳动)</h4>
+                                    <p class="tool-description">TARS 是字节跳动开源多模式AI 代理。虽然它在技术上支持构建各种应用，包括 AI Agent，但它本身不是一个直接的 AI Agent 产品。</p>
+                                    <a href="https://agent-tars.com/?utm_source=ai-bot.cn" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/coze.jpg" alt="扣子Coze" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">扣子Coze</h4>
+                                    <p class="tool-description">这是一个国内的低代码/无代码AI应用开发平台，允许用户通过拖拽、配置等方式快速构建各种AI应用，包括具备Agent能力的自动化工作流、对话机器人等。用户可以定义Agent的目标、行为和与其他工具的交互方式。</p>
+                                    <a href="https://www.coze.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/dify.jpg" alt="Dify" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Dify</h4>
+                                    <p class="tool-description">这是一个开源的LLM应用开发平台，它强调通过可视化界面和灵活的组件来构建基于大型语言模型的应用，其中包括可以自主执行任务、与其他工具交互的AI Agent。Dify提供了Agent所需的核心能力，如记忆、工具使用、规划等。</p>
+                                    <a href="https://dify.ai/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="divider"></div>
+                    
+                    <div class="tools-category reveal">
+                        <h3 class="section-subtitle">设计/代码垂直领域工具</h3>
+                        <p class="category-desc">设计/代码垂直领域AI Agent工具或平台：</p>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <img src="images/galileo.jpg" alt="Galileo AI" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Galileo AI</h4>
+                                    <p class="tool-description">一个通过自然语言生成 UI 设计的平台。</p>
+                                    <a href="https://www.galileo-ai.com/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/v0.jpg" alt="v0.dev" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">v0.dev</h4>
+                                    <p class="tool-description">这是一个通过自然语言生成用户界面的工具。它更像是一个设计辅助工具，而不是一个独立的 AI Agent。</p>
+                                    <a href="https://v0.dev/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/bolt.jpg" alt="Bolt AI" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Bolt AI</h4>
+                                    <p class="tool-description">Bolt AI 提供 AI 驱动的搜索和知识管理解决方案。它可以被视为一种智能信息检索和分析 Agent，帮助用户更高效地找到和利用信息。它也可能提供构建自定义 AI Agent 的能力，同时，它还支持从figma导入，一键生成web和移动端app。</p>
+                                    <a href="https://bolt.new/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/cursor.jpg" alt="Cursor" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">Cursor</h4>
+                                    <p class="tool-description">AI代码编辑器</p>
+                                    <a href="https://cursor.sh/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <div class="copyright">
+                    <p>&copy; 2024 D.K AI. 保留所有权利</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html> 
