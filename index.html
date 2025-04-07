@@ -11,7 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/ogl@0.0.61/dist/ogl.umd.js"></script>
     <style>
         .radiant-text {
             background: linear-gradient(to right, var(--accent), #ffffff, var(--accent));
@@ -118,6 +120,15 @@
             from, to { border-color: transparent }
             50% { border-color: var(--accent) }
         }
+        
+        .threads-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
@@ -142,10 +153,10 @@
 
         <main>
             <section id="home" class="hero">
-                <div class="particle-container" id="particles-bg"></div>
+                <div id="particles-js" class="particle-container"></div>
                 <div class="hero-content">
                     <div class="title-container">
-                        <h2 class="radiant-text">AI Agent（智能体）</h2>
+                        <h2 class="modern-gradient-text">AI Agent（智能体）</h2>
                     </div>
                     <p>AI Agent，字面意思是<span class="highlight-text">AI代理</span>，就是代表人类去完成具体的任务的AI</p>
                     
@@ -476,6 +487,15 @@
                                     <h4 class="tool-title">Manas AI</h4>
                                     <p class="tool-description">这是一个提供对话式 AI 解决方案的公司，他们的技术可以用于构建各种 AI Agent，特别是聊天机器人和虚拟助手，为企业提供客户服务、销售支持等功能。</p>
                                     <a href="https://manus.im/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
+                                </div>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <img src="images/genspark.jpg" alt="GenSpark" class="tool-image">
+                                <div class="tool-content">
+                                    <h4 class="tool-title">GenSpark</h4>
+                                    <p class="tool-description">GenSpark 是一个强大的 AI 图像生成工具，使用自然语言提示快速创建高质量、定制化的图像。它结合了先进的图像生成技术，支持多种风格和细节控制，适用于设计师、营销人员和内容创作者。</p>
+                                    <a href="https://genspark.ai/" target="_blank" class="tool-link">访问官网 <i class="ri-external-link-line"></i></a>
                                 </div>
                             </div>
                             

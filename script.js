@@ -1,23 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 初始化 particles.js
+    if (document.getElementById('particles-js')) {
+        particlesJS.load('particles-js', 'particles-config.json', function() {
+            console.log('particles.js 已加载');
+        });
+    }
+
     // 导航菜单切换
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('nav');
+    const menuIcon = document.querySelector('.menu-toggle i');
 
     menuToggle.addEventListener('click', () => {
         nav.classList.toggle('active');
-        if (nav.classList.contains('active')) {
-            menuToggle.innerHTML = '<i class="ri-close-line"></i>';
-        } else {
-            menuToggle.innerHTML = '<i class="ri-menu-line"></i>';
-        }
+        menuIcon.classList.toggle('ri-menu-line');
+        menuIcon.classList.toggle('ri-close-line');
     });
 
-    // 点击导航链接关闭菜单
+    // 导航链接点击关闭菜单
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             nav.classList.remove('active');
-            menuToggle.innerHTML = '<i class="ri-menu-line"></i>';
+            menuIcon.classList.add('ri-menu-line');
+            menuIcon.classList.remove('ri-close-line');
         });
     });
 
@@ -33,15 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 给当前点击的按钮添加active类
                 btn.classList.add('active');
                 
-                // 获取对应的tab内容ID
-                const tabId = btn.getAttribute('data-tab');
-                
                 // 隐藏所有内容
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-                
+                tabContents.forEach(content => content.classList.remove('active'));
                 // 显示对应的内容
+                const tabId = btn.getAttribute('data-tab');
                 document.getElementById(tabId).classList.add('active');
             });
         });
@@ -124,26 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
-
-    // VANTA.js 粒子背景
-    if (document.getElementById('particles-bg') && typeof VANTA !== 'undefined' && typeof THREE !== 'undefined') {
-        VANTA.NET({
-            el: '#particles-bg',
-            mouseControls: true,
-            touchControls: true,
-            gyroControls: false,
-            minHeight: 200.00,
-            minWidth: 200.00,
-            scale: 1.00,
-            scaleMobile: 1.00,
-            color: 0x64ffda,
-            backgroundColor: 0x121212,
-            points: 10.00,
-            maxDistance: 20.00,
-            spacing: 20.00,
-            showDots: false
-        });
-    }
 
     // 3D卡片效果
     const card = document.getElementById('hero-card');
